@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Satender Kumar - Portfolio</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .project-card, .certificate-card, .education-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      transition: transform 0.3s ease, background 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 400px;
+    }
+
+    .project-card:hover, .certificate-card:hover, .education-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .project-title, .certificate-title, .education-title {
+      color: #ffd700;
+      transition: color 0.3s ease;
+    }
+
+    .project-title:hover, .certificate-title:hover, .education-title:hover {
+      color: #ff9900;
+    }
+
+    .project-link, .certificate-link {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      background: #ffffff;
+      color: #000000;
+      font-weight: 600;
+      transition: background 0.3s ease, color 0.3s ease;
+      margin: 0.5rem;
+    }
+
+    .project-link:hover, .certificate-link:hover {
+      background: #ffd700;
+      color: #000000;
+    }
+
+    h2 {
+      text-align: center;
+      cursor: pointer;
+      display: inline-block;
+      width: 100%;
+      transition: color 0.4s ease, transform 0.4s ease;
+    }
+
+    h2:hover {
+      color: #00ffff;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: translateX(0);
+      }
+      25% {
+        transform: translateX(-8px);
+      }
+      50% {
+        transform: translateX(8px);
+      }
+      75% {
+        transform: translateX(-4px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    nav a {
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover {
+      transform: scale(1.15);
+      color: #ffeb3b;
+    }
+
+    .active-link {
+      color: #ffeb3b !important;
+      font-weight: bold;
+    }
+
+    .dark-mode {
+      background-color: #1a202c;
+      color: white;
+    }
+
+    .light-mode {
+      background-color: #f9f9f9;
+      color: black;
+    }
+
+    .certificate-badge {
+      width: 80px;
+      height: 80px;
+      background-color: #ffd700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .certificate-badge:hover {
+      transform: rotate(15deg) scale(1.1);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+
+    .certificate-icon {
+      font-size: 2.5rem;
+      color: #000;
+    }
+
+    /* Skills Section Styles */
+    .skills-container {
+      position: relative;
+      min-height: 400px;
+    }
+
+    .skills-slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      opacity: 0;
+      transform: translateX(50px);
+      pointer-events: none;
+    }
+
+    .skills-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: all;
+    }
+
+    .skill-item {
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+
+    .skill-item:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .skill-item.active {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    .skill-popup {
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      width: max-content;
+      max-width: 300px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 10;
+      margin-bottom: 10px;
+    }
+
+    .skill-item:hover .skill-popup {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(-5px);
+    }
+
+    .skills-nav-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #ffd700;
+      color: #000;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 5;
+      transition: all 0.3s ease;
+    }
+
+    .skills-nav-btn:hover {
+      background: #fff;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .skills-nav-btn.prev {
+      left: -20px;
+    }
+
+    .skills-nav-btn.next {
+      right: -20px;
+    }
+
+    /* Education Card Styles */
+    .education-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #ffd700;
+      transition: transform 0.3s ease;
+    }
+
+    .education-card:hover .education-icon {
+      transform: rotate(15deg) scale(1.2);
+    }
+
+    .education-degree {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    .education-institution {
+      font-size: 1.25rem;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+    }
+
+    .education-duration {
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+
+    .education-location {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 min-h-screen text-white transition-colors duration-500" id="body">
+  <!-- Navbar -->
+  <header id="navbar" class="fixed top-0 left-0 w-full z-50 p-6 flex flex-col md:flex-row justify-between items-center shadow-lg bg-black bg-opacity-30 backdrop-blur-md space-y-4 md:space-y-0">
+    <h1 class="text-4xl font-bold">Satender Kumar</h1>
+    <nav class="flex flex-wrap gap-4 md:gap-8 text-lg font-semibold">
+      <a href="#about" class="nav-link text-white">About</a>
+      <a href="#skills" class="nav-link text-white">Skills</a>
+      <a href="#projects" class="nav-link text-white">Projects</a>
+      <a href="#education" class="nav-link text-white">Education</a>
+      <a href="#certificates" class="nav-link text-white">Certificates</a>
+      <a href="#contact" class="nav-link text-white">Contact</a>
+    </nav>
+    <button onclick="toggleDarkMode()" class="bg-yellow-300 text-black px-4 py-2 rounded-full font-semibold hover:bg-white transition">Toggle Mode</button>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="flex flex-col items-center justify-center h-screen text-center px-4 pt-28">
+    <h2 class="text-5xl md:text-7xl font-extrabold mb-6">Hello, I'm <span class="text-yellow-300">Satender</span></h2>
+    <h3 class="text-3xl md:text-4xl mb-8"><span id="typed"></span></h3>
+    <a href="./satender kumar Resume N (3).pdf" download class="bg-white text-black py-3 px-8 rounded-full font-semibold shadow-xl hover:bg-yellow-300 transition">Download Resume</a>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12 transform transition hover:scale-105 hover:bg-opacity-50">
+    <h2 class="text-5xl font-extrabold mb-6">About Me</h2>
+    <p class="text-xl leading-relaxed text-center mb-4">Aspiring Front-End Developer passionate about crafting engaging and responsive web applications. Skilled in HTML, CSS, JavaScript, Tailwind CSS, Bootstrap and Python, with a strong focus on UI/UX and solving real-world problems through code.</p>
+    
+    <div class="mt-6 text-center">
+      <h3 class="text-3xl font-bold mb-4">Internship Experience</h3>
+      <div class="bg-white bg-opacity-10 p-6 rounded-lg max-w-2xl mx-auto">
+        <h4 class="text-2xl font-semibold text-yellow-300">Barco Electronics System</h4>
+        <p class="text-xl">Salesforce Admin Intern | May 2024 - Oct 2024</p>
+        <ul class="list-disc list-inside text-left mt-4 space-y-2 mx-auto max-w-lg">
+          <li>Assisted in implementing and maintaining Salesforce CRM systems, customizing objects, fields, and workflows</li>
+          <li>Conducted data migration and integration tasks, ensuring system performance and data accuracy</li>
+          <li>Created reports and dashboards that improved team productivity by 15%</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section id="skills" class="section p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12 transform transition hover:scale-105 hover:bg-opacity-50">
+    <h2 class="text-5xl font-extrabold mb-6">Skills</h2>
+    <div class="skills-container relative max-w-4xl mx-auto">
+      <button class="skills-nav-btn prev" onclick="prevSkillsSlide()">←</button>
+      <button class="skills-nav-btn next" onclick="nextSkillsSlide()">→</button>
+      
+      <!-- Technical Skills Slide -->
+      <div class="skills-slide active bg-white bg-opacity-10 p-8 rounded-lg">
+        <h3 class="text-2xl font-semibold text-yellow-300 mb-6 text-center">Technical Skills</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- HTML -->
+          <div class="skill-item">
+            <span>HTML</span>
+            <div class="skill-popup">
+              <p>Proficient in semantic HTML5 markup and accessibility standards</p>
+            </div>
+          </div>
+          
+          <!-- CSS -->
+          <div class="skill-item">
+            <span>CSS</span>
+            <div class="skill-popup">
+              <p>Advanced CSS3 including animations, transitions, and responsive design</p>
+            </div>
+          </div>
+          
+          <!-- JavaScript -->
+          <div class="skill-item">
+            <span>JavaScript</span>
+            <div class="skill-popup">
+              <p>ES6+ features, DOM manipulation, async programming</p>
+            </div>
+          </div>
+          
+          <!-- Tailwind CSS -->
+          <div class="skill-item">
+            <span>Tailwind CSS</span>
+            <div class="skill-popup">
+              <p>Utility-first CSS framework for rapid UI development</p>
+            </div>
+          </div>
+          
+          <!-- Bootstrap -->
+          <div class="skill-item">
+            <span>Bootstrap</span>
+            <div class="skill-popup">
+              <p>Responsive grid system and component library</p>
+            </div>
+          </div>
+          
+          <!-- React -->
+          <div class="skill-item">
+            <span>React</span>
+            <div class="skill-popup">
+              <p>Component-based architecture, hooks, and state management</p>
+            </div>
+          </div>
+          
+          <!-- Angular -->
+          <div class="skill-item">
+            <span>Angular</span>
+            <div class="skill-popup">
+              <p>TypeScript-based framework with MVC architecture</p>
+            </div>
+          </div>
+          
+          <!-- Python -->
+          <div class="skill-item">
+            <span>Python</span>
+            <div class="skill-popup">
+              <p>Scripting and basic backend development</p>
+            </div>
+          </div>
+          
+          <!-- MySQL -->
+          <div class="skill-item">
+            <span>MySQL</span>
+            <div class="skill-popup">
+              <p>Database design and querying</p>
+            </div>
+          </div>
+          
+          <!-- Git -->
+          <div class="skill-item">
+            <span>Git</span>
+            <div class="skill-popup">
+              <p>Version control and collaboration workflows</p>
+            </div>
+          </div>
+          
+          <!-- GitHub -->
+          <div class="skill-item">
+            <span>GitHub</span>
+            <div class="skill-popup">
+              <p>Code hosting and project management</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Professional Skills Slide -->
+      <div class="skills-slide bg-white bg-opacity-10 p-8 rounded-lg">
+        <h3 class="text-2xl font-semibold text-yellow-300 mb-6 text-center">Professional Skills</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <!-- Problem Solving -->
+          <div class="skill-item">
+            <span>Problem Solving</span>
+            <div class="skill-popup">
+              <p>Analytical thinking and creative solutions for technical challenges</p>
+            </div>
+          </div>
+          
+          <!-- Team Collaboration -->
+          <div class="skill-item">
+            <span>Team Collaboration</span>
+            <div class="skill-popup">
+              <p>Effective communication and teamwork in agile environments</p>
+            </div>
+          </div>
+          
+          <!-- Attention to Detail -->
+          <div class="skill-item">
+            <span>Attention to Detail</span>
+            <div class="skill-popup">
+              <p>Meticulous approach to code quality and UI perfection</p>
+            </div>
+          </div>
+          
+          <!-- UI/UX Principles -->
+          <div class="skill-item">
+            <span>UI/UX Principles</span>
+            <div class="skill-popup">
+              <p>User-centered design and intuitive interfaces</p>
+            </div>
+          </div>
+          
+          <!-- Cross-browser Compatibility -->
+          <div class="skill-item">
+            <span>Cross-browser Compatibility</span>
+            <div class="skill-popup">
+              <p>Ensuring consistent experience across browsers</p>
+            </div>
+          </div>
+          
+          <!-- Time Management -->
+          <div class="skill-item">
+            <span>Time Management</span>
+            <div class="skill-popup">
+              <p>Efficient task prioritization and deadline adherence</p>
+            </div>
+          </div>
+          
+          <!-- Communication -->
+          <div class="skill-item">
+            <span>Communication</span>
+            <div class="skill-popup">
+              <p>Clear technical documentation and presentations</p>
+            </div>
+          </div>
+          
+          <!-- Adaptability -->
+          <div class="skill-item">
+            <span>Adaptability</span>
+            <div class="skill-popup">
+              <p>Quick learning of new technologies and frameworks</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12">
+    <h2 class="text-5xl font-extrabold mb-6">Projects</h2>
+    <div class="relative overflow-hidden min-h-[450px]">
+      <div id="carousel" class="flex transition-transform duration-500 ease-in-out">
+        <!-- Slide 1 -->
+        <div class="min-w-full project-card text-white p-6">
+          <h3 class="text-3xl font-semibold project-title">GitHub User Finder</h3>
+          <p class="text-lg">Web app to search GitHub profiles with async/await, error handling, and modern UI.</p>
+          <p class="text-yellow-300 text-lg font-semibold mt-2">Tech Used: HTML, CSS, JavaScript</p>
+          <a href="https://github.com/SatenderKumar2698/github-user-finder" target="_blank" class="project-link mt-3">View Project</a>
+        </div>
+        <!-- Slide 2 -->
+        <div class="min-w-full project-card text-white p-6">
+          <h3 class="text-3xl font-semibold project-title">Netflix Clone Page</h3>
+          <p class="text-lg">Fully responsive Netflix landing page using CSS Flexbox & Grid with animations.</p>
+          <p class="text-yellow-300 text-lg font-semibold mt-2">Tech Used: HTML, CSS</p>
+          <a href="https://github.com/SatenderKumar2698/netflix-clone" target="_blank" class="project-link mt-3">View Project</a>
+        </div>
+        <!-- Slide 3 -->
+        <div class="min-w-full project-card text-white p-6">
+          <h3 class="text-3xl font-semibold project-title">Interactive Photo Gallery</h3>
+          <p class="text-lg">Interactive gallery with lightbox and optimized performance for fast loading.</p>
+          <p class="text-yellow-300 text-lg font-semibold mt-2">Tech Used: HTML, CSS, JavaScript</p>
+          <a href="https://github.com/SatenderKumar2698/interactive-photo-gallery" target="_blank" class="project-link mt-3">View Project</a>
+        </div>
+      </div>
+      <!-- Navigation Buttons -->
+      <button onclick="prevSlide()" class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-yellow-300 text-black px-4 py-2 rounded-full font-bold hover:bg-white transition">←</button>
+      <button onclick="nextSlide()" class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-yellow-300 text-black px-4 py-2 rounded-full font-bold hover:bg-white transition">→</button>
+    </div>
+  </section>
+
+  <!-- Education -->
+  <section id="education" class="section p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12">
+    <h2 class="text-5xl font-extrabold mb-6">Education</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Master's Degree -->
+      <div class="education-card text-white p-6">
+        <div class="education-icon">🎓</div>
+        <h3 class="education-degree">Master's in Computer Applications</h3>
+        <p class="education-institution">IMS, Noida</p>
+        <p class="education-duration">2022 – 2024</p>
+        <p class="education-location">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+          </svg>
+          Noida, India
+        </p>
+      </div>
+      
+      <!-- Bachelor's Degree -->
+      <div class="education-card text-white p-6">
+        <div class="education-icon">📚</div>
+        <h3 class="education-degree">Bachelor of Science</h3>
+        <p class="education-institution">MJPRU</p>
+        <p class="education-duration">2017 – 2021</p>
+        <p class="education-location">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+          </svg>
+          Bijnor, India
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certificates -->
+  <section id="certificates" class="section p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12">
+    <h2 class="text-5xl font-extrabold mb-6">Certificates</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <!-- Certificate 1 -->
+      <div class="certificate-card text-white p-6 transform transition hover:scale-105">
+        <div class="certificate-badge">
+          <span class="certificate-icon">🏆</span>
+        </div>
+        <h3 class="text-3xl font-semibold certificate-title">MERN Stack Development</h3>
+        <p class="text-xl text-yellow-300">GeeksforGeeks</p>
+        <p class="text-lg mt-2">Completed comprehensive training in MERN stack development, covering MongoDB, Express.js, React, and Node.js</p>
+        <div class="mt-4">
+          <a href="./mern certificate gfg.pdf" class="certificate-link" onclick="downloadCertificate('mern-certificate.pdf')">Download Certificate</a>
+          <a href="https://www.geeksforgeeks.org/" target="_blank" class="certificate-link">Visit GeeksforGeeks</a>
+        </div>
+      </div>
+      
+      <!-- Certificate 2 -->
+      <div class="certificate-card text-white p-6 transform transition hover:scale-105">
+        <div class="certificate-badge">
+          <span class="certificate-icon">🎓</span>
+        </div>
+        <h3 class="text-3xl font-semibold certificate-title">JavaScript Certification</h3>
+        <p class="text-xl text-yellow-300">IIT Bombay</p>
+        <p class="text-lg mt-2">Certified in JavaScript programming from prestigious IIT Bombay, covering advanced concepts and best practices</p>
+        <div class="mt-4">
+          <a href="./SATENDER-KUMAR-Participant-Certificate (1)[1].pdf" class="certificate-link" onclick="downloadCertificate('SATENDER-KUMAR-Participant-Certificate (1)[1].pdf')">Download Certificate</a>
+          <a href="https://www.iitb.ac.in/" target="_blank" class="certificate-link">Visit IIT Bombay</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="p-12 bg-black bg-opacity-30 backdrop-blur-md rounded-xl shadow-2xl mx-6 my-12">
+    <h2 class="text-5xl font-extrabold mb-6 text-center">Contact</h2>
+    <div class="text-xl text-center space-y-4">
+      <p>
+        📧 Email: <a href="mailto:satender2698@gmail.com" class="underline hover:text-yellow-300">satender2698@gmail.com</a>
+      </p>
+      <p>
+        📱 Phone: <a href="tel:9069566849" class="underline hover:text-yellow-300">9069566849</a>
+      </p>
+      <p>
+        🏠 Address: Sector 49 , Noida, India
+      </p>
+      <div class="flex justify-center space-x-6 mt-6">
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com/in/satender-kumar-340038264" target="_blank" class="hover:text-yellow-300 flex items-center space-x-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M19 0h-14C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V9h3v10zm-1.5-11.27c-.97 0-1.75-.79-1.75-1.76S5.53 4.22 6.5 4.22s1.75.78 1.75 1.75-.78 1.76-1.75 1.76zM20 19h-3v-5.6c0-1.34-.03-3.07-1.87-3.07-1.87 0-2.16 1.46-2.16 2.97V19h-3V9h2.88v1.36h.04c.4-.76 1.38-1.56 2.83-1.56 3.03 0 3.59 1.99 3.59 4.58V19z"/>
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+
+        <!-- GitHub -->
+        <a href="https://github.com/SatenderKumar2698" target="_blank" class="hover:text-yellow-300 flex items-center space-x-2">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path fill-rule="evenodd" d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.28 3.44 9.75 8.21 11.33.6.11.82-.26.82-.58 0-.29-.01-1.05-.02-2.07-3.34.73-4.04-1.61-4.04-1.61-.55-1.4-1.34-1.77-1.34-1.77-1.09-.74.08-.72.08-.72 1.2.08 1.83 1.23 1.83 1.23 1.07 1.82 2.8 1.29 3.48.99.11-.78.42-1.29.76-1.59-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23a11.4 11.4 0 0 1 6 0C17.98 5.7 19 6.02 19 6.02c.66 1.64.25 2.85.12 3.15.77.84 1.23 1.91 1.23 3.22 0 4.61-2.81 5.63-5.49 5.93.43.37.81 1.1.81 2.22 0 1.6-.02 2.89-.02 3.28 0 .32.21.7.83.58A12.01 12.01 0 0 0 24 12.5C24 5.87 18.63.5 12 .5z" clip-rule="evenodd"/>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="text-center p-6 bg-black bg-opacity-30 backdrop-blur-md">
+    <p class="text-lg">&copy; 2025 Satender Kumar. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Typed.js
+    new Typed('#typed', {
+      strings: ["Front-End Developer", "UI/UX Enthusiast", "Web Developer"],
+      typeSpeed: 50,
+      backSpeed: 50,
+      loop: true
+    });
+
+    // Dark mode toggle
+    function toggleDarkMode() {
+      const body = document.getElementById('body');
+      body.classList.toggle('bg-white');
+      body.classList.toggle('text-black');
+    }
+
+    // Scrollspy
+    const sections = document.querySelectorAll(".section");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - 80;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active-link");
+        if (link.getAttribute("href").includes(current)) {
+          link.classList.add("active-link");
+        }
+      });
+    });
+
+    // Carousel Logic
+    let currentSlide = 0;
+    const carousel = document.getElementById('carousel');
+    const totalSlides = carousel.children.length;
+    const body = document.getElementById('body');
+
+    const bgColors = [
+      'from-purple-500 via-pink-500 to-red-500',
+      'from-blue-500 via-green-500 to-teal-500',
+      'from-yellow-500 via-orange-500 to-pink-500'
+    ];
+
+    function updateCarousel() {
+      const offset = currentSlide * -100;
+      carousel.style.transform = `translateX(${offset}%)`;
+      body.className = `transition-colors duration-500 min-h-screen text-white bg-gradient-to-r ${bgColors[currentSlide]}`;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateCarousel();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateCarousel();
+    }
+
+    // Certificate download function (placeholder)
+    function downloadCertificate(filename) {
+      alert(`Certificate ${filename} download would start here in a real implementation`);
+      // In a real implementation, you would link to the actual certificate file
+      // window.location.href = `path/to/certificates/${filename}`;
+    }
+
+    // Skills Slider Logic
+    let currentSkillsSlide = 0;
+    const skillsSlides = document.querySelectorAll('.skills-slide');
+    const totalSkillsSlides = skillsSlides.length;
+
+    function showSkillsSlide(index) {
+      skillsSlides.forEach((slide, i) => {
+        if (i === index) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+      currentSkillsSlide = index;
+    }
+
+    function nextSkillsSlide() {
+      showSkillsSlide((currentSkillsSlide + 1) % totalSkillsSlides);
+    }
+
+    function prevSkillsSlide() {
+      showSkillsSlide((currentSkillsSlide - 1 + totalSkillsSlides) % totalSkillsSlides);
+    }
+
+    // Initialize
+    updateCarousel();
+    showSkillsSlide(0);
+  </script>
+</body>
+
+</html>
